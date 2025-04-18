@@ -4,8 +4,9 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.Serializable
 import org.example.voidchat.client.KtorClient
+import org.example.voidchat.model.RepositoryResponse
+import org.example.voidchat.model.User
 
 object UserRepository {
     val client = KtorClient.client
@@ -30,17 +31,4 @@ object UserRepository {
     }
 }
 
-@Serializable
-data class User(
-    val name: String,
-    val email: String,
-    val password: String
-)
-
-@Serializable
-data class RepositoryResponse<T>(
-    val data: T? = null,
-    val message: String,
-    val statusCode: Int
-)
 
