@@ -31,4 +31,5 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.4.0")
     implementation("org.mongodb:bson-kotlinx:5.4.0")
+    implementation("org.mindrot:jbcrypt:0.4")
 }
