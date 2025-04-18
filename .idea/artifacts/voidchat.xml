@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="voidchat">
     <output-path>$PROJECT_DIR$/frontend/site/build/libs</output-path>
-    <root id="archive" name="voidchat.jar" />
+    <root id="archive" name="voidchat.jar">
+      <element id="module-output" name="voidchat.site.jvmMain" />
+    </root>
   </artifact>
 </component>
