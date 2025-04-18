@@ -33,6 +33,11 @@ kotlin {
             implementation(libs.silk.icons.fa)
             implementation(libs.kobwebx.markdown)
             implementation(project(":worker"))
+
+            implementation("io.ktor:ktor-client-core:2.3.0")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+
         }
         jvmMain.dependencies {
             compileOnly(libs.kobweb.api) // Provided by Kobweb backend at runtime
