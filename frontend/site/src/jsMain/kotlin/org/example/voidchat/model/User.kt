@@ -8,6 +8,11 @@ data class User(
     val email: String,
     val password: String
 )
+@Serializable
+data class User1(
+    val email: String,
+    val password: String
+)
 
 @Serializable
 data class RepositoryResponse<T>(
