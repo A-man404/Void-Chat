@@ -1,14 +1,14 @@
 package repository
 
 import com.example.database.MongoDatabaseFactory
+import com.example.plugins.JWTConfig
+import com.example.plugins.generateToken
 import com.mongodb.client.model.Filters
 import io.ktor.http.*
 import kotlinx.coroutines.flow.firstOrNull
 import model.LoginRequest
 import model.RepositoryResponse
 import model.User
-import plugins.JWTConfig
-import plugins.generateToken
 import security.PasswordHasher
 
 object UserRepository {
@@ -32,7 +32,9 @@ object UserRepository {
                 val userWithHashedPassword = user.copy(password = hashedPassword)
                 println(hashedPassword)
 
+
                 collection.insertOne(userWithHashedPassword)
+
                 return RepositoryResponse(
                     data = true,
                     message = "User Created Successfully",
@@ -55,8 +57,6 @@ object UserRepository {
 
         return try {
             if (userExists != null) {
-                //perform login operation
-
                 val checkPassword = PasswordHasher.checkPassword(user.password, userExists.password)
 
                 if (checkPassword) {
@@ -71,7 +71,6 @@ object UserRepository {
 
                 }
 
-
             } else {
                 RepositoryResponse(data = null, message = "User not found", statusCode = HttpStatusCode.NotFound.value)
 
@@ -82,9 +81,6 @@ object UserRepository {
                 message = "Error Found",
                 statusCode = HttpStatusCode.NotFound.value
             )
-
         }
-
     }
-
 }

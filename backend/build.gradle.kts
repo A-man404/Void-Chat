@@ -32,4 +32,5 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.4.0")
     implementation("org.mongodb:bson-kotlinx:5.4.0")
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.ktor.server.cors)
 }
