@@ -29,7 +29,10 @@ object UserRepository {
 
                 val hashedPassword = PasswordHasher.createHashPassword(password = user.password)
 
-                val userWithHashedPassword = user.copy(password = hashedPassword)
+                val userWithHashedPassword = user.copy(
+                    password = hashedPassword,
+                    profileImage = "https://avatar.iran.liara.run/public/boy?username=${user.name}"
+                )
                 println(hashedPassword)
 
 
