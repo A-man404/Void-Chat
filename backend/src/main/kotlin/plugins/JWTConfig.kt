@@ -1,5 +1,6 @@
 package plugins
 
+import com.example.plugins.JWTConfig
 import io.ktor.server.application.*
 
 fun Application.JWTConfig(): JWTConfig {
