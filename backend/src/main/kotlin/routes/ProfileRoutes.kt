@@ -1,22 +1,25 @@
 package routes
 
+import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import model.ChangePasswordRequest
 import repository.ProfileRepository
+import repository.UserRepository
 
 fun Route.ProfileRoutes() {
 
     route("/profile") {
         authenticate("jwt-auth") {
+
             get("fetch") {
                 val principal = call.principal<JWTPrincipal>()
                 val email = principal?.getClaim("email", String::class)
-
                 val response = ProfileRepository.getUserProfile(email.toString())
-                call.respond(response)
+                call.respond(HttpStatusCode.fromValue(response.statusCode), response)
             }
 
             delete("/delete") {
@@ -24,8 +27,17 @@ fun Route.ProfileRoutes() {
                 val principal = call.principal<JWTPrincipal>()
                 val email = principal?.getClaim("email", String::class)
                 val response = ProfileRepository.deleteUser(email.toString(), password)
-                call.respond(response)
+                call.respond(HttpStatusCode.fromValue(response.statusCode), response)
             }
+
+            post("/update-password") {
+                val data = call.receive<ChangePasswordRequest>()
+                val principal = call.principal<JWTPrincipal>()
+                val email = principal?.getClaim("email", String::class)
+                val response = UserRepository.changePassword(email.toString(), data)
+                call.respond(HttpStatusCode.fromValue(response.statusCode), response)
+            }
+
 
         }
     }

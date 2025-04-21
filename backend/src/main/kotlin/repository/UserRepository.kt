@@ -4,21 +4,21 @@ import com.example.database.MongoDatabaseFactory
 import com.example.plugins.JWTConfig
 import com.example.plugins.generateToken
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import io.ktor.http.*
 import kotlinx.coroutines.flow.firstOrNull
-import model.LoginRequest
-import model.RepositoryResponse
-import model.User
+import model.*
 import security.PasswordHasher
+import java.time.LocalDateTime
 
 object UserRepository {
 
     private val database = MongoDatabaseFactory.client
-    private val collection = database.getCollection<User>("users")
+    private val userCollection = database.getCollection<User>("users")
 
-    suspend fun registerUser(user: User): RepositoryResponse<Boolean> {
+    suspend fun registerUser(user: RegisterRequest): RepositoryResponse<Boolean> {
         return try {
-            val doesUserExist = collection.find<User>(Filters.eq("email", user.email)).firstOrNull()
+            val doesUserExist = userCollection.find<User>(Filters.eq("email", user.email)).firstOrNull()
             if (doesUserExist != null) {
                 RepositoryResponse(
                     data = false,
@@ -29,14 +29,14 @@ object UserRepository {
 
                 val hashedPassword = PasswordHasher.createHashPassword(password = user.password)
 
-                val userWithHashedPassword = user.copy(
+                val newUser = User(
+                    name = user.name,
+                    email = user.email,
                     password = hashedPassword,
-                    profileImage = "https://avatar.iran.liara.run/public/boy?username=${user.name}"
+                    profileImage = "https://avatar.iran.liara.run/public/boy?username=${user.name}",
                 )
-                println(hashedPassword)
 
-
-                collection.insertOne(userWithHashedPassword)
+                userCollection.insertOne(newUser)
 
                 return RepositoryResponse(
                     data = true,
@@ -55,15 +55,28 @@ object UserRepository {
     }
 
     suspend fun loginUser(user: LoginRequest, jwtConfig: JWTConfig): RepositoryResponse<String> {
-
-        val userExists = collection.find<User>(Filters.eq("email", user.email)).firstOrNull()
-
+        val userExists = userCollection.find<User>(Filters.eq("email", user.email)).firstOrNull()
         return try {
             if (userExists != null) {
                 val checkPassword = PasswordHasher.checkPassword(user.password, userExists.password)
 
+                if (!userExists.isActive) {
+                    return RepositoryResponse(
+                        data = null,
+                        message = "Your account has been deactivated, please contact support",
+                        statusCode = HttpStatusCode.Unauthorized.value
+                    )
+
+                }
+
                 if (checkPassword) {
-                    val token = generateToken(jwtConfig, email = user.email)
+                    val token = generateToken(jwtConfig, email = user.email, userExists.role)
+
+                    userCollection.updateOne(
+                        Filters.eq("email", user.email),
+                        Updates.set("lastLoginAt", LocalDateTime.now().toString())
+                    )
+
                     RepositoryResponse(data = token, message = "User Logged In", statusCode = HttpStatusCode.OK.value)
                 } else {
                     RepositoryResponse(
@@ -86,4 +99,30 @@ object UserRepository {
             )
         }
     }
+
+    suspend fun changePassword(email: String, req: ChangePasswordRequest): RepositoryResponse<Boolean> {
+
+        try {
+            val existingUser = userCollection.find(Filters.eq("email", email)).firstOrNull()
+                ?: return RepositoryResponse(false, "User doesn't exist", HttpStatusCode.NotFound.value)
+
+
+            val isPasswordCorrect = PasswordHasher.checkPassword(req.currentPassword, existingUser.password)
+
+            if (!isPasswordCorrect) {
+                return RepositoryResponse(false, "Current password is incorrect", HttpStatusCode.Unauthorized.value)
+            }
+
+            val newHashed = PasswordHasher.createHashPassword(req.newPassword)
+            userCollection.updateOne(Filters.eq("email", email), Updates.set("password", newHashed))
+
+            return RepositoryResponse(true, "Password changed successfully", HttpStatusCode.OK.value)
+        } catch (e: Exception) {
+            return RepositoryResponse(false, "An error occurred ${e.localizedMessage}", HttpStatusCode.OK.value)
+
+        }
+    }
+
+
 }
+
