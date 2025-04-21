@@ -2,14 +2,13 @@ package com.example.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.jwt.jwt
-import io.ktor.server.response.respondText
-import plugins.JWTConfig
-import java.util.Date
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.response.*
+import model.UserRole
+import java.util.*
 
 fun Application.configureSecurity(config: JWTConfig) {
     install(Authentication) {
@@ -39,16 +38,16 @@ fun Application.configureSecurity(config: JWTConfig) {
         }
     }
 }
-fun generateToken(config: JWTConfig, email: String): String {
+
+fun generateToken(config: JWTConfig, email: String, role: UserRole): String {
     return JWT.create()
         .withAudience(config.audience)
         .withIssuer(config.issuer)
         .withClaim("email", email)
+        .withClaim("role", role.name)
         .withExpiresAt(Date(System.currentTimeMillis() + config.tokenExpiry))
         .sign(Algorithm.HMAC256(config.secret))
 }
-
-
 
 
 data class JWTConfig(
