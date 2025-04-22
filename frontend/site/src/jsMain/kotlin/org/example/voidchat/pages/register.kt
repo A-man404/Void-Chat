@@ -105,7 +105,7 @@ fun RegisterPage() {
 
 @Composable
 fun InputField1(label: String, value: String, isPassword: Boolean = false, onChange: (String) -> Unit) {
-    Column(modifier = Modifier.margin(bottom = 16.px)) {
+    Column(modifier = Modifier.fillMaxWidth().margin(bottom = 16.px, leftRight = 16.px)) {
         Input(
             placeholder = label,
             type = if (isPassword) InputType.Password else InputType.Text,

@@ -44,5 +44,29 @@ object ProfileRepository {
         }
     }
 
+    suspend fun searchUser(email: String): RepositoryResponse<User> {
+
+        return try {
+            val user = collection.find(Filters.eq("email", email)).firstOrNull() ?: return RepositoryResponse(
+                data = null, message = "User Doesn't exist", HttpStatusCode.NotFound.value
+            )
+
+            val editedUser = user.copy(name = user.name, email = user.email)
+
+            RepositoryResponse(
+                data = editedUser,
+                message = "User Fetched Successfully",
+                statusCode = HttpStatusCode.OK.value
+            )
+        } catch (e: Exception) {
+            RepositoryResponse(
+                data = null,
+                message = "Unknown error ${e.localizedMessage}",
+                statusCode = HttpStatusCode.InternalServerError.value
+            )
+        }
+
+    }
+
 
 }

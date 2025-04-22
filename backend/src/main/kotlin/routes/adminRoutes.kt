@@ -4,7 +4,6 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.response.respond
 import io.ktor.server.routing.*
 import model.ChangeRoleRequest
@@ -12,7 +11,7 @@ import model.RepositoryResponse
 import model.UserRole
 import repository.AdminRepository
 
-fun Route.AdminRoutes() {
+fun Route.adminRoutes() {
 
     route("/admin") {
         authenticate("jwt-auth") {

@@ -10,7 +10,7 @@ import model.ChangePasswordRequest
 import repository.ProfileRepository
 import repository.UserRepository
 
-fun Route.ProfileRoutes() {
+fun Route.profileRoutes() {
 
     route("/profile") {
         authenticate("jwt-auth") {
@@ -36,6 +36,15 @@ fun Route.ProfileRoutes() {
                 val email = principal?.getClaim("email", String::class)
                 val response = UserRepository.changePassword(email.toString(), data)
                 call.respond(HttpStatusCode.fromValue(response.statusCode), response)
+            }
+
+            get("/search/{email}") {
+                val email = call.request.queryParameters["email"] ?: return@get call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Missing email"
+                )
+                val res = ProfileRepository.searchUser(email.toString())
+                call.respond(HttpStatusCode.fromValue(res.statusCode), res)
             }
 
 
