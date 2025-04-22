@@ -12,7 +12,8 @@ data class User(
     val profileImage: String,
     val lastLoginAt: String? = LocalDateTime.now().toString(),
     val role: UserRole = UserRole.USER,
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    val status: String = "OFFLINE"
 )
 
 @Serializable
