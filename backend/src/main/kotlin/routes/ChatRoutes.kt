@@ -20,6 +20,13 @@ fun Route.chatRoutes() {
             return@webSocket
         }
 
+        if (!senderEmail.contains("@") || !targetEmail.contains("@")) {
+            send("Invalid email format.")
+            close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "Invalid email format"))
+            return@webSocket
+        }
+
+
         activeUsers[senderEmail] = this
         send("Connected as $senderEmail. Chatting with $targetEmail")
 
