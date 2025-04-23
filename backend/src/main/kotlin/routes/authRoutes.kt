@@ -9,7 +9,7 @@ import model.LoginRequest
 import model.RegisterRequest
 import repository.UserRepository
 
-fun Route.AuthRoutes(jwtConfig: JWTConfig) {
+fun Route.authRoutes(jwtConfig: JWTConfig) {
 
 
     route("/auth") {
