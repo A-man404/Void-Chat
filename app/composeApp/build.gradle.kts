@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -33,6 +34,9 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.decompose)
+            implementation(libs.ktor.client.okhttp)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -43,6 +47,20 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.decompose)
+            implementation(libs.decompose.jetbrains)
+            implementation(libs.kotlinx.serialization.json)
+
+            implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
+            implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.0")
+            implementation("cafe.adriel.voyager:voyager-transitions:1.0.0")
+            implementation("cafe.adriel.voyager:voyager-tab-navigator:1.0.0")
+
+            implementation("br.com.devsrsouza.compose.icons:eva-icons:1.1.1")
+            implementation(libs.bundles.ktor)
+        }
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
