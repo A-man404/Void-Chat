@@ -39,6 +39,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            val voyagerVersion = "1.1.0-beta02"
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -57,7 +58,13 @@ kotlin {
             implementation("cafe.adriel.voyager:voyager-tab-navigator:1.0.0")
 
             implementation("br.com.devsrsouza.compose.icons:eva-icons:1.1.1")
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
+
+            implementation("com.russhwolf:multiplatform-settings:1.0.0")
+            implementation("com.russhwolf:multiplatform-settings-coroutines:1.0.0")
+            implementation("com.russhwolf:multiplatform-settings-no-arg:1.3.0")
             implementation(libs.bundles.ktor)
+            implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
