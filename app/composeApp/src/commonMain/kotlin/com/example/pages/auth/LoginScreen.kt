@@ -38,6 +38,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.components.CustomInputField
 import com.example.components.LoadingBar
+import com.example.pages.main.ChatListScreen
 import com.example.ui.theme.accentPastel
 import com.example.ui.theme.backgroundColor
 import com.example.ui.theme.cardColor
@@ -47,7 +48,6 @@ import com.example.ui.theme.successColor
 import com.example.utils.Prefs
 import com.example.viewmodel.AuthState
 import com.example.viewmodel.AuthViewModel
-import kotlinx.coroutines.launch
 
 
 object LoginScreen : Screen {
@@ -95,9 +95,12 @@ object LoginScreen : Screen {
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(
                             onClick = {
-                                coroutine.launch {
-                                    viewModel.loginUser(email, password)
-                                }
+//                                coroutine.launch {
+//                                    viewModel.loginUser(email, password)
+//                                }
+                                navigator.replaceAll(ChatListScreen)
+
+
                             },
                             shape = RoundedCornerShape(50),
                             colors = ButtonDefaults.buttonColors(backgroundColor = primaryPastel),
@@ -168,7 +171,7 @@ fun ResultData(authState: State<AuthState>, navigator: Navigator) {
     when (val data = authState.value.data) {
         is String -> {
             Prefs.saveToken(data)
-//            navigator.replaceAll(MainScreen)
+            navigator.replaceAll(ChatListScreen)
         }
 
         is Boolean -> {

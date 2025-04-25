@@ -9,5 +9,8 @@ val cardColor = Color(0xFF2B2B3C)
 val accentColor = Color(0xFFBCAEFF)
 val successColor = Color(0xFF9AEBA3)
 val errorColor = Color(0xFFFF8A8A)
+ val softWhite = Color(0xFFECECF1)
+ val lightCardColor = Color(0xFF3A3A4F)
+ val softTextColor = Color(0xFFB0B0C0)
 
 

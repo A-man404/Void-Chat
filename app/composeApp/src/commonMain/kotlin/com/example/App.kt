@@ -13,9 +13,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App() {
     MaterialTheme {
-//        Navigator(SplashScreen) { navigator ->
-//            ScaleTransition(navigator)
-//        }
-        ChatListScreen()
+        Navigator(SplashScreen) { navigator ->
+            ScaleTransition(navigator)
+        }
+
+
     }
 }
