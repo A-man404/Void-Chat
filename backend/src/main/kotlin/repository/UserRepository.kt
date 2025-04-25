@@ -41,7 +41,7 @@ object UserRepository {
                 return RepositoryResponse(
                     data = true,
                     message = "User Created Successfully",
-                    statusCode = HttpStatusCode.Created.value
+                    statusCode = HttpStatusCode.OK.value
                 )
             }
         } catch (e: Exception) {

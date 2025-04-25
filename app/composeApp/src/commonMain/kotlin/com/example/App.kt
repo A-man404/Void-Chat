@@ -3,17 +3,19 @@ package com.example
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.example.pages.LoginScreen
-import com.example.pages.SignUpScreen
-import com.example.pages.SplashScreen
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.ScaleTransition
+import com.example.pages.auth.SplashScreen
+import com.example.pages.main.ChatListScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        LoginScreen()
-//SplashScreen()
-//        SignUpScreen()
+//        Navigator(SplashScreen) { navigator ->
+//            ScaleTransition(navigator)
+//        }
+        ChatListScreen()
     }
 }
