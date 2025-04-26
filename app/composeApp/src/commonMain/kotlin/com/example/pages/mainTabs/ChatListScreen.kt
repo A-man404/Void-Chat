@@ -1,9 +1,8 @@
-package com.example.pages.main
+package com.example.pages.mainTabs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,15 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,45 +35,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import com.example.ui.theme.accentColor
 import com.example.ui.theme.accentPastel
 import com.example.ui.theme.backgroundColor
 import com.example.ui.theme.lightCardColor
 import com.example.ui.theme.softTextColor
 import com.example.ui.theme.softWhite
 import compose.icons.EvaIcons
-import compose.icons.evaicons.Fill
 import compose.icons.evaicons.Outline
-import compose.icons.evaicons.fill.MessageCircle
-import compose.icons.evaicons.fill.Person
-import compose.icons.evaicons.fill.PhoneCall
-import compose.icons.evaicons.outline.Bell
 import compose.icons.evaicons.outline.Person
 import compose.icons.evaicons.outline.Plus
 
-
-object ChatListScreen : Screen {
-    @Composable
-    override fun Content() {
-        var selectedTabIndex by remember { mutableStateOf(1) }
-
-        Scaffold(
-            topBar = { ChatTopAppBar() },
-            bottomBar = {
-                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    BottomNavigationBar(selectedIndex = selectedTabIndex) { selectedTabIndex = it }
-                }
-            }
-        ) {
-            Column(modifier = Modifier.fillMaxSize().background(backgroundColor)) {
-                StoriesRow()
-                ChatCard()
-            }
-        }
+@Composable
+fun ChatListScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize().background(backgroundColor)
+    ) {
+        StoriesRow()
+        ChatCard()
     }
-
-
 }
 
 @Composable
@@ -163,50 +134,20 @@ private fun AddStory() {
 }
 
 @Composable
-private fun ChatTopAppBar() {
-    TopAppBar(
-        modifier = Modifier.height(100.dp),
-        title = {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text("Welcome Aman", fontSize = 12.sp, color = softTextColor)
-                    Text(
-                        "Void Chat",
-                        fontSize = 28.sp,
-                        color = accentPastel,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-                Icon(
-                    imageVector = EvaIcons.Outline.Bell,
-                    contentDescription = "Notifications",
-                    tint = softWhite,
-                    modifier = Modifier.size(32.dp)
-                )
-            }
-        },
-        backgroundColor = backgroundColor,
-        elevation = 0.dp
-    )
-}
-
-@Composable
 private fun ChatCard(modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxSize(),
         backgroundColor = lightCardColor,
         shape = RoundedCornerShape(topStart = 56.dp, topEnd = 56.dp)
     ) {
+
         Column(modifier = Modifier.fillMaxSize().padding(top = 48.dp, start = 20.dp, end = 20.dp)) {
             Text(
                 "Recent Chat",
                 fontSize = 24.sp,
                 color = softWhite,
                 fontWeight = FontWeight.SemiBold
+
             )
             LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
                 items(10) {
@@ -232,7 +173,7 @@ private fun ChatItem() {
                 .size(56.dp)
                 .clip(CircleShape)
                 .background(Color(0xFF2D2C3C))
-                .border(2.dp, Color(0xFFB59EFF), CircleShape),
+                .border(2.dp, Color(0xFFFBE7A1), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -250,7 +191,7 @@ private fun ChatItem() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Aman", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = softWhite)
-                Text("00:21", color = accentColor)
+                Text("00:21", color = accentPastel)
             }
             Text(
                 "Last message preview here...",
@@ -261,42 +202,3 @@ private fun ChatItem() {
     }
 }
 
-@Composable
-private fun BottomNavigationBar(
-    selectedIndex: Int, onItemSelected: (Int) -> Unit
-) {
-    val items = listOf("Calls", "Messages", "Profile")
-    val icons = listOf(EvaIcons.Fill.PhoneCall, EvaIcons.Fill.MessageCircle, EvaIcons.Fill.Person)
-
-    Surface(
-        modifier = Modifier.wrapContentWidth().padding(bottom = 16.dp),
-        color = Color(0xFF121212),
-        shape = RoundedCornerShape(48.dp),
-        elevation = 16.dp
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 40.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(48.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items.forEachIndexed { index, label ->
-                val isSelected = index == selectedIndex
-                val color = if (isSelected) Color(0xFFFFD6A5) else softWhite
-
-                Column(
-                    modifier = Modifier.clickable { onItemSelected(index) }
-                        .padding(vertical = 8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = icons[index],
-                        contentDescription = label,
-                        tint = color,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(text = label, color = color, fontSize = 12.sp)
-                }
-            }
-        }
-    }
-}
