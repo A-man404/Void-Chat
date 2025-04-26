@@ -46,8 +46,6 @@ fun Route.profileRoutes() {
                 val res = ProfileRepository.searchUser(email.toString())
                 call.respond(HttpStatusCode.fromValue(res.statusCode), res)
             }
-
-
         }
     }
 }

@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -23,7 +26,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +40,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.components.CustomInputField
 import com.example.components.LoadingBar
-import com.example.pages.main.ChatListScreen
+import com.example.pages.main.MainScreen
 import com.example.ui.theme.accentPastel
 import com.example.ui.theme.backgroundColor
 import com.example.ui.theme.cardColor
@@ -54,8 +56,7 @@ object LoginScreen : Screen {
     @Composable
     override fun Content() {
 
-        val viewModel: AuthViewModel = viewModel()
-        val coroutine = rememberCoroutineScope()
+        val viewModel: AuthViewModel = viewModel { AuthViewModel() }
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         val navigator = LocalNavigator.currentOrThrow
@@ -66,6 +67,7 @@ object LoginScreen : Screen {
             modifier = Modifier
                 .fillMaxSize()
                 .background(backgroundColor)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(24.dp)
         ) {
             Column(
@@ -98,7 +100,7 @@ object LoginScreen : Screen {
 //                                coroutine.launch {
 //                                    viewModel.loginUser(email, password)
 //                                }
-                                navigator.replaceAll(ChatListScreen)
+                                navigator.replaceAll(MainScreen)
 
 
                             },
@@ -171,7 +173,7 @@ fun ResultData(authState: State<AuthState>, navigator: Navigator) {
     when (val data = authState.value.data) {
         is String -> {
             Prefs.saveToken(data)
-            navigator.replaceAll(ChatListScreen)
+            navigator.replaceAll(MainScreen)
         }
 
         is Boolean -> {
@@ -183,3 +185,4 @@ fun ResultData(authState: State<AuthState>, navigator: Navigator) {
         }
     }
 }
+
