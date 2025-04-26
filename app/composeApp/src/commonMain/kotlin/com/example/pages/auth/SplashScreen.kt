@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.example.pages.main.MainScreen
 import com.example.ui.theme.backgroundColor
 import com.example.ui.theme.primaryPastel
 import kotlinx.coroutines.delay
@@ -56,14 +57,17 @@ object SplashScreen : Screen {
         )
 
         LaunchedEffect(Unit) {
-            delay(500)
-            isVisible = true
-            delay(1000)
-            isTextVisible = true
-            delay(1500)
+            try {
+                delay(500)
+                isVisible = true
+                delay(1000)
+                isTextVisible = true
+                delay(1500)
 
-
-            navigator.replace(LoginScreen)
+                navigator.replace(MainScreen)
+            } catch (e: Throwable) {
+                println("Failed to navigate: ${e.message}")
+            }
         }
 
 
