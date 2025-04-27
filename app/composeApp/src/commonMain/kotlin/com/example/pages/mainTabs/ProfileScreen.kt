@@ -2,27 +2,10 @@ package com.example.pages.mainTabs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,15 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.example.ui.theme.accentPastel
-import com.example.ui.theme.backgroundColor
-import com.example.ui.theme.cardColor
-import com.example.ui.theme.lightCardColor
-import com.example.ui.theme.softTextColor
-import com.example.ui.theme.softWhite
+import com.example.ui.theme.*
 import compose.icons.EvaIcons
 import compose.icons.evaicons.Outline
 import compose.icons.evaicons.outline.ArrowIosForward
+import compose.icons.evaicons.outline.LogOut
+import compose.icons.evaicons.outline.Person
+import compose.icons.evaicons.outline.Settings
 
 @Composable
 fun ProfileScreen() {
@@ -52,79 +33,90 @@ fun ProfileScreen() {
             .fillMaxSize()
             .background(backgroundColor)
             .systemBarsPadding()
-            .padding(16.dp)
+            .padding(horizontal = 20.dp)
     ) {
         TopAppBar(
-            title = { Text("Profile", color = softWhite, fontSize = 20.sp) },
+            title = { Text("Profile", color = softWhite, fontSize = 22.sp) },
             backgroundColor = backgroundColor,
             elevation = 0.dp
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
+        // Profile Header
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
             backgroundColor = lightCardColor,
-            shape = RoundedCornerShape(16.dp),
-            elevation = 4.dp
+            shape = RoundedCornerShape(24.dp),
+            elevation = 6.dp,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
+            Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(20.dp)
                     .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Profile Picture Placeholder
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(80.dp)
                         .clip(CircleShape)
                         .background(softWhite)
                 )
 
-                Spacer(Modifier.width(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                Column {
-                    Text(
-                        "Your Name",
-                        color = softWhite,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text("youremail@example.com", color = softTextColor, fontSize = 14.sp)
+                Text("Your Name", color = softWhite, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("youremail@example.com", color = softTextColor, fontSize = 14.sp)
 
-                    Spacer(Modifier.height(8.dp))
-                    Button(
-                        onClick = { },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = accentPastel)
-                    ) {
-                        Text("Edit Profile", color = Color.Black)
-                    }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { /* TODO: Change Profile */ },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentPastel),
+                    shape = RoundedCornerShape(50)
+                ) {
+                    Text("Change Profile", color = Color.Black, fontWeight = FontWeight.SemiBold)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
-        // 3. Action Items
+        // Action Items
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ProfileActionItem(
+                label = "Profile Info & Settings",
+                icon = EvaIcons.Outline.Settings,
+                onClick = { /* TODO: Navigate to Profile Info */ }
+            )
+
+            ProfileActionItem(
                 label = "Add Friend",
-                onClick = { /* navigate to AddFriendScreen */ })
-            ProfileActionItem(label = "View Friend Requests", onClick = { /* navigate */ })
-            ProfileActionItem(label = "Friend List", onClick = { /* navigate */ })
+                icon = EvaIcons.Outline.Person,
+                onClick = { /* TODO: Navigate to Add Friend */ }
+            )
+
+            ProfileActionItem(
+                label = "Friends List",
+                icon = EvaIcons.Outline.Person,
+                onClick = { /* TODO: Navigate to Friends List */ }
+            )
+
+            ProfileActionItem(
+                label = "Logout",
+                icon = EvaIcons.Outline.LogOut,
+                onClick = { /* TODO: Logout */ }
+            )
         }
     }
 }
 
-
 @Composable
 fun ProfileActionItem(
     label: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
     onClick: () -> Unit
 ) {
     Card(
@@ -132,21 +124,34 @@ fun ProfileActionItem(
             .fillMaxWidth()
             .clickable(onClick = onClick),
         backgroundColor = cardColor,
-        shape = RoundedCornerShape(12.dp),
-        elevation = 2.dp
+        shape = RoundedCornerShape(20.dp),
+        elevation = 4.dp
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 18.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(label, color = softWhite, fontSize = 16.sp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+    2                   tint = accentPastel,
+                    modifier = Modifier.size(24.dp)
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Text(label, color = softWhite, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            }
+
             Icon(
-                imageVector = EvaIcons.Outline.ArrowIosForward, // placeholder
+                imageVector = EvaIcons.Outline.ArrowIosForward,
                 contentDescription = null,
-                tint = softTextColor
+                tint = softTextColor,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
