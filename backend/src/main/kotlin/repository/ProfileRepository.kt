@@ -7,15 +7,16 @@ import kotlinx.coroutines.flow.firstOrNull
 import model.RepositoryResponse
 import model.User
 import security.PasswordHasher
+import service.DatabaseService
 
 object ProfileRepository {
-    private val database = MongoDatabaseFactory.client
-    private val collection = database.getCollection<User>("users")
+    val userCollection = DatabaseService.getUserCollection()
+
 
 
     suspend fun getUserProfile(email: String): RepositoryResponse<User> {
 
-        val user = collection.find(Filters.eq("email", email)).firstOrNull()
+        val user = userCollection.find(Filters.eq("email", email)).firstOrNull()
 
         return if (user == null) {
             RepositoryResponse(data = null, message = "User not found", HttpStatusCode.NotFound.value)
@@ -25,7 +26,7 @@ object ProfileRepository {
     }
 
     suspend fun deleteUser(email: String, password: String): RepositoryResponse<Boolean> {
-        val user = collection.find(Filters.eq("email", email)).firstOrNull()
+        val user = userCollection.find(Filters.eq("email", email)).firstOrNull()
 
         if (user == null) {
             return RepositoryResponse(data = false, message = "User not found", HttpStatusCode.NotFound.value)
@@ -35,7 +36,7 @@ object ProfileRepository {
             return RepositoryResponse(data = false, message = "Password is incorrect", HttpStatusCode.BadRequest.value)
         }
 
-        val deletedUser = collection.findOneAndDelete(Filters.eq("email", email))
+        val deletedUser = userCollection.findOneAndDelete(Filters.eq("email", email))
 
         return if (deletedUser != null) {
             RepositoryResponse(data = true, message = "User deleted successfully", HttpStatusCode.OK.value)
@@ -47,7 +48,7 @@ object ProfileRepository {
     suspend fun searchUser(email: String): RepositoryResponse<User> {
 
         return try {
-            val user = collection.find(Filters.eq("email", email)).firstOrNull() ?: return RepositoryResponse(
+            val user = userCollection.find(Filters.eq("email", email)).firstOrNull() ?: return RepositoryResponse(
                 data = null, message = "User Doesn't exist", HttpStatusCode.NotFound.value
             )
 

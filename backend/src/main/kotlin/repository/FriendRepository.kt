@@ -8,11 +8,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import model.FriendUser
 import model.RepositoryResponse
 import model.User
+import service.DatabaseService
 
 object FriendRepository {
 
-    private val database = MongoDatabaseFactory.client
-    private val userCollection = database.getCollection<User>("users")
+    val userCollection = DatabaseService.getUserCollection()
+
 
     suspend fun addFriend(email: String, friendEmail: String): RepositoryResponse<Boolean> {
         return try {

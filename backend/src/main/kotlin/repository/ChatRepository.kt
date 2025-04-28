@@ -7,10 +7,11 @@ import io.ktor.http.*
 import kotlinx.coroutines.flow.firstOrNull
 import model.RepositoryResponse
 import model.User
+import service.DatabaseService
 
 object ChatRepository {
-    private val database = MongoDatabaseFactory.client
-    private val userCollection = database.getCollection<User>("users")
+    val userCollection = DatabaseService.getUserCollection()
+
 
 
     suspend fun changeStatus(status: String, email: String): RepositoryResponse<Boolean> {

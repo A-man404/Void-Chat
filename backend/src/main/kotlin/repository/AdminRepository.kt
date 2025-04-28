@@ -10,11 +10,12 @@ import model.ChangeRoleRequest
 import model.RepositoryResponse
 import model.User
 import model.UserRole
+import service.DatabaseService
 
 object AdminRepository {
 
-    private val database = MongoDatabaseFactory.client
-    private val userCollection = database.getCollection<User>("users")
+    val userCollection = DatabaseService.getUserCollection()
+
 
     suspend fun getAllUsers(page: Int, limit: Int): RepositoryResponse<List<User>> {
         return try {

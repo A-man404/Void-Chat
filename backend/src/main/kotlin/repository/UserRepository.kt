@@ -1,6 +1,5 @@
 package repository
 
-import com.example.database.MongoDatabaseFactory
 import com.example.plugins.JWTConfig
 import com.example.plugins.generateToken
 import com.mongodb.client.model.Filters
@@ -9,12 +8,13 @@ import io.ktor.http.*
 import kotlinx.coroutines.flow.firstOrNull
 import model.*
 import security.PasswordHasher
+import service.DatabaseService
 import java.time.LocalDateTime
 
 object UserRepository {
 
-    private val database = MongoDatabaseFactory.client
-    private val userCollection = database.getCollection<User>("users")
+    val userCollection = DatabaseService.getUserCollection()
+
 
     suspend fun registerUser(user: RegisterRequest): RepositoryResponse<Boolean> {
         return try {
