@@ -14,8 +14,9 @@ data class User(
     val role: UserRole = UserRole.USER,
     val isActive: Boolean = true,
     val status: String = "OFFLINE",
-    val friends: List<String> = emptyList()
-
+    val friends: List<String> = emptyList(),
+    val friendRequests: List<String> = emptyList(),
+    val blockedUser: List<String> = emptyList(),
 )
 
 

@@ -123,6 +123,49 @@ object UserRepository {
         }
     }
 
+    suspend fun findUser(email: String, friendEmail: String): RepositoryResponse<FriendUser> {
+        return try {
+
+            val user = AdminRepository.userCollection.find(Filters.eq("email", friendEmail)).firstOrNull()
+                ?: return RepositoryResponse(
+                    data = null,
+                    message = "User not found",
+                    statusCode = HttpStatusCode.NotFound.value
+                )
+
+            val user2 = AdminRepository.userCollection.find(Filters.eq("email", email)).firstOrNull()
+                ?: return RepositoryResponse(
+                    data = null,
+                    message = "User not found",
+                    statusCode = HttpStatusCode.NotFound.value
+                )
+            println("user $user")
+            println("user2 $user2")
+
+            if (user.blockedUser.contains(email)) {
+                return RepositoryResponse(
+                    data = null,
+                    message = "You are blocked by the user",
+                    statusCode = HttpStatusCode.Forbidden.value
+                )
+            }
+
+            val friendUser = FriendUser.fromUser(user)
+
+            RepositoryResponse(
+                data = friendUser,
+                message = "User fetched Successfully",
+                statusCode = HttpStatusCode.Found.value
+            )
+        } catch (e: Exception) {
+            RepositoryResponse(
+                data = null,
+                message = "An Error Occurred ${e.localizedMessage}",
+                statusCode = HttpStatusCode.InternalServerError.value
+            )
+        }
+    }
+
 
 }
 

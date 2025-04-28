@@ -62,6 +62,7 @@ fun Route.friendRoutes() {
 
             }
 
+
             get("/getAllFriends") {
                 val principal = call.principal<JWTPrincipal>()
                 val email = principal?.getClaim("email", String::class) ?: return@get call.respond(
@@ -72,6 +73,37 @@ fun Route.friendRoutes() {
 
                 call.respond(HttpStatusCode.fromValue(response.statusCode), response)
 
+            }
+        }
+    }
+
+    route("block") {
+        authenticate("jwt-auth") {
+
+            post("/add") {
+                val blockEmail = call.queryParameters["blockEmail"] ?: return@post call.respond(
+                    HttpStatusCode.NotFound,
+                    "Please Provide an email"
+                )
+                val principal = call.principal<JWTPrincipal>()
+                val email = principal?.getClaim("email", String::class).toString()
+
+                val response = FriendRepository.blockUser(email = email, blockEmail = blockEmail)
+
+                call.respond(HttpStatusCode.fromValue(response.statusCode), response)
+            }
+
+            post("/remove") {
+                val unBlockEmail = call.queryParameters["unBlockEmail"] ?: return@post call.respond(
+                    HttpStatusCode.NotFound,
+                    "Please Provide an email"
+                )
+                val principal = call.principal<JWTPrincipal>()
+                val email = principal?.getClaim("email", String::class).toString()
+
+                val response = FriendRepository.unBlockUser(email = email, unBlockEmail = unBlockEmail)
+
+                call.respond(HttpStatusCode.fromValue(response.statusCode), response)
             }
         }
     }

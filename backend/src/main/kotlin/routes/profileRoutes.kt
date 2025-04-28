@@ -47,6 +47,21 @@ fun Route.profileRoutes() {
                 call.respond(HttpStatusCode.fromValue(res.statusCode), res)
             }
 
+            get("/find") {
+                val friendEmail = call.queryParameters["friendEmail"] ?: return@get call.respond(
+                    HttpStatusCode.InternalServerError,
+                    "Please Provide your friend email"
+                )
+                val principal = call.principal<JWTPrincipal>()
+                val email = principal?.getClaim("email", String::class) ?: return@get call.respond(
+                    HttpStatusCode.InternalServerError,
+                    "Error Occurred"
+                )
+                val response = UserRepository.findUser(email,friendEmail)
+
+                call.respond(HttpStatusCode.fromValue(response.statusCode), response)
+
+            }
 
         }
     }
