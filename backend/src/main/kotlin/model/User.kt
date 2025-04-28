@@ -13,8 +13,34 @@ data class User(
     val lastLoginAt: String? = LocalDateTime.now().toString(),
     val role: UserRole = UserRole.USER,
     val isActive: Boolean = true,
-    val status: String = "OFFLINE"
+    val status: String = "OFFLINE",
+    val friends: List<String> = emptyList()
+
 )
+
+
+@Serializable
+data class FriendUser(
+    val name: String,
+    val email: String,
+    val isActive: Boolean,
+    val status: String,
+    val profileImage: String,
+    val friends: List<String>
+) {
+    companion object {
+        fun fromUser(user: User): FriendUser {
+            return FriendUser(
+                name = user.name,
+                email = user.email,
+                isActive = user.isActive,
+                status = user.status,
+                profileImage = user.profileImage,
+                friends = user.friends
+            )
+        }
+    }
+}
 
 @Serializable
 data class LoginRequest(
