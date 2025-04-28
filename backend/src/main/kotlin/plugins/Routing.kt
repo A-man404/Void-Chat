@@ -2,10 +2,7 @@ package com.example.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import routes.adminRoutes
-import routes.authRoutes
-import routes.chatRoutes
-import routes.profileRoutes
+import routes.*
 
 fun Application.configureRouting(jwtConfig: JWTConfig) {
 
@@ -14,6 +11,7 @@ fun Application.configureRouting(jwtConfig: JWTConfig) {
         adminRoutes()
         authRoutes(jwtConfig)
         profileRoutes()
+        friendRoutes()
 
     }
 }

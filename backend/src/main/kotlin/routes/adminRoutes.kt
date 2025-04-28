@@ -37,13 +37,17 @@ fun Route.adminRoutes() {
             }
 
             get("/user/{email}") {
+
                 val email = call.pathParameters["email"] ?: return@get call.respond(
                     HttpStatusCode.BadRequest, "Please enter an email"
                 )
+
                 val principal = call.principal<JWTPrincipal>()
+
                 val role = principal?.getClaim("role", UserRole::class) ?: return@get call.respond(
                     HttpStatusCode.BadRequest, "Error Occurred"
                 )
+
                 if (role == UserRole.ADMIN) {
                     val res = AdminRepository.getUserByEmail(email)
                     call.respond(HttpStatusCode.fromValue(res.statusCode), res)
