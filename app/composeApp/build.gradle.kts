@@ -65,6 +65,7 @@ kotlin {
             implementation("com.russhwolf:multiplatform-settings-no-arg:1.3.0")
             implementation(libs.bundles.ktor)
             implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+            implementation("io.ktor:ktor-client-websockets:2.3.7")
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)

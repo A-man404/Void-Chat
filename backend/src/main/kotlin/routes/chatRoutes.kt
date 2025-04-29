@@ -2,18 +2,19 @@ package routes
 
 import com.example.database.MongoDatabaseFactory
 import com.mongodb.client.model.Filters
+import domain.repository.ChatRepository
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.flow.firstOrNull
+import model.ChatMessage
 import model.User
-import repository.ChatRepository
+import service.ChatService
 import java.util.concurrent.ConcurrentHashMap
 
 
 data class ChatUser(
-    val email: String,
-    val session: DefaultWebSocketServerSession
+    val email: String, val session: DefaultWebSocketServerSession
 )
 
 val activeUsers = ConcurrentHashMap<String, ChatUser>()
@@ -24,7 +25,7 @@ private val userCollection = database.getCollection<User>("users")
 fun Route.chatRoutes() {
 
 
-    webSocket("/chat/{senderEmail}/{targetEmail}") {
+    webSocket("/chat1/{senderEmail}/{targetEmail}") {
 
         val senderEmail = call.parameters["senderEmail"]
         val targetEmail = call.parameters["targetEmail"]
@@ -76,4 +77,47 @@ fun Route.chatRoutes() {
             println("$senderEmail disconnected.")
         }
     }
+
+
+
+    webSocket("/chat") {
+        val sender = call.request.queryParameters["sender"] ?: return@webSocket close(
+            CloseReason(
+                CloseReason.Codes.VIOLATED_POLICY, message = "Sender Email is not specified"
+            ),
+        )
+
+        val recipient = call.request.queryParameters["recipient"] ?: return@webSocket close(
+            CloseReason(
+                CloseReason.Codes.VIOLATED_POLICY, message = "Recipient Email is not specified"
+            ),
+        )
+        try {
+
+            val sorted = listOf(sender,recipient).sorted()
+            val roomId = "${sorted[0].substringBefore("@")}_${sorted[1].substringBefore("@")}"
+            ChatService.addSession(roomId, this)
+            for (frame in incoming) {
+                if (frame is Frame.Text) {
+
+                    val incomingMessage = frame.readText()
+                    val message = ChatMessage(
+                        roomId = roomId,
+                        sender = sender,
+                        recipient = recipient,
+                        message = incomingMessage,
+                        timeStamp = System.currentTimeMillis()
+                    )
+                    ChatService.saveMessage(message)
+                    ChatService.sendMessage(roomId, message)
+
+                }
+            }
+        } catch (e: Exception) {
+            println("Error: ${e.localizedMessage}")
+        }
+
+
+    }
+
 }

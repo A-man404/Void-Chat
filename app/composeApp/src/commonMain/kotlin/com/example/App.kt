@@ -6,16 +6,17 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.ScaleTransition
 import com.example.pages.auth.SplashScreen
+import com.example.pages.main.ChatEntryScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        Navigator(SplashScreen) { navigator ->
-            ScaleTransition(navigator)
-        }
-
+//        Navigator(SplashScreen) { navigator ->
+//            ScaleTransition(navigator)
+//        }
+        ChatEntryScreen()
 
     }
 }

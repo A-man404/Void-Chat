@@ -34,4 +34,5 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
     implementation(libs.ktor.server.cors)
     implementation(libs.ktor.server.websockets)
+    implementation("io.insert-koin:koin-ktor:3.5.0")
 }

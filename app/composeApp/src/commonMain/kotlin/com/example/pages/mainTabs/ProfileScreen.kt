@@ -138,7 +138,7 @@ fun ProfileActionItem(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-    2                   tint = accentPastel,
+                       tint = accentPastel,
                     modifier = Modifier.size(24.dp)
                 )
 

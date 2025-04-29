@@ -1,5 +1,6 @@
 package routes
 
+import domain.repository.FriendRepository
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -7,8 +8,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import model.ChangePasswordRequest
-import repository.ProfileRepository
-import repository.UserRepository
+import domain.repository.ProfileRepository
+import domain.repository.UserRepository
 
 fun Route.profileRoutes() {
 
@@ -43,7 +44,7 @@ fun Route.profileRoutes() {
                     HttpStatusCode.BadRequest,
                     "Missing email"
                 )
-                val res = ProfileRepository.searchUser(email.toString())
+                val res = ProfileRepository.searchUser(email)
                 call.respond(HttpStatusCode.fromValue(res.statusCode), res)
             }
 
@@ -57,7 +58,7 @@ fun Route.profileRoutes() {
                     HttpStatusCode.InternalServerError,
                     "Error Occurred"
                 )
-                val response = UserRepository.findUser(email,friendEmail)
+                val response = FriendRepository.findUser(email,friendEmail)
 
                 call.respond(HttpStatusCode.fromValue(response.statusCode), response)
 
