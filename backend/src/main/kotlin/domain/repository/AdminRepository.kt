@@ -1,6 +1,5 @@
-package repository
+package domain.repository
 
-import com.example.database.MongoDatabaseFactory
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
 import io.ktor.http.*
@@ -29,7 +28,7 @@ object AdminRepository {
         } catch (e: Exception) {
             RepositoryResponse(
                 data = null,
-                message = "Error occured ${e.localizedMessage}",
+                message = "Error occurred ${e.localizedMessage}",
                 statusCode = HttpStatusCode.BadRequest.value
             )
         }
@@ -71,7 +70,7 @@ object AdminRepository {
         if (role.name != UserRole.ADMIN.name) {
             return RepositoryResponse(
                 data = false,
-                message = "You dont have the permission to change the roles",
+                message = "You don't have the permission to change the roles",
                 statusCode = HttpStatusCode.Unauthorized.value
             )
         }
@@ -81,7 +80,7 @@ object AdminRepository {
         } catch (e: Exception) {
             return RepositoryResponse(
                 data = false,
-                message = "Invalid role specified",
+                message = "Invalid role specified ${e.localizedMessage}",
                 statusCode = HttpStatusCode.BadRequest.value
             )
         }
@@ -115,7 +114,7 @@ object AdminRepository {
         } catch (e: Exception) {
             RepositoryResponse(
                 data = false,
-                message = "An Error Occurred",
+                message = "An Error Occurred ${e.localizedMessage}",
                 statusCode = HttpStatusCode.InternalServerError.value
             )
         }
@@ -139,7 +138,7 @@ object AdminRepository {
         } catch (e: Exception) {
             RepositoryResponse(
                 data = false,
-                message = "An Error Occurred",
+                message = "An Error Occurred ${e.localizedMessage}",
                 statusCode = HttpStatusCode.InternalServerError.value
             )
         }

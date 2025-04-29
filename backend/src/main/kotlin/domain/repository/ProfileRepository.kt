@@ -1,6 +1,5 @@
-package repository
+package domain.repository
 
-import com.example.database.MongoDatabaseFactory
 import com.mongodb.client.model.Filters
 import io.ktor.http.*
 import kotlinx.coroutines.flow.firstOrNull
@@ -11,7 +10,6 @@ import service.DatabaseService
 
 object ProfileRepository {
     val userCollection = DatabaseService.getUserCollection()
-
 
 
     suspend fun getUserProfile(email: String): RepositoryResponse<User> {

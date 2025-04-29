@@ -1,4 +1,4 @@
-package repository
+package domain.repository
 
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
