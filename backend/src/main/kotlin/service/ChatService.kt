@@ -6,6 +6,7 @@ import io.ktor.websocket.*
 import model.ChatMessage
 
 object ChatService {
+
     private val activeSessions = mutableMapOf<String, MutableSet<WebSocketSession>>()
 
     suspend fun fetchChatHistory(roomID: String): List<ChatMessage> {
