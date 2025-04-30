@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.utils.Constants.BASE_URL_CHAT
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.WebSockets
@@ -144,7 +145,7 @@ class ChatClient {
     val messages = _messages.asSharedFlow()
 
     fun connectIn(scope: CoroutineScope, sender: String, recipient: String) {
-        val url = "ws://10.0.2.2:8081/chat?sender=$sender&recipient=$recipient"
+        val url = "ws://${BASE_URL_CHAT}/chat?sender=$sender&recipient=$recipient"
 
         scope.launch {
             try {
@@ -176,6 +177,7 @@ class ChatClient {
             session?.send(Frame.Text(text))
         } catch (e: Exception) {
             println("Send error: ${e.message}")
+
         }
     }
 

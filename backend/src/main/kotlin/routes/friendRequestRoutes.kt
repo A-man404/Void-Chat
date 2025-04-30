@@ -5,7 +5,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import domain.repository.FriendRequestRepository
+import repository.FriendRequestRepository
 
 fun Route.friendRequestRoute() {
     route("friend-request") {

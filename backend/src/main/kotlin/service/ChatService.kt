@@ -1,7 +1,7 @@
 package service
 
 
-import domain.repository.ChatRepository
+import repository.ChatRepository
 import io.ktor.websocket.*
 import model.ChatMessage
 
