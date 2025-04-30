@@ -1,4 +1,4 @@
-package domain.repository
+package repository
 
 import com.example.plugins.JWTConfig
 import com.example.plugins.generateToken
