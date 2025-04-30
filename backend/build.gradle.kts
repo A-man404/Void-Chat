@@ -35,4 +35,5 @@ dependencies {
     implementation(libs.ktor.server.cors)
     implementation(libs.ktor.server.websockets)
     implementation("io.insert-koin:koin-ktor:3.5.0")
+
 }

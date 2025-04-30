@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 import model.ChangeRoleRequest
 import model.RepositoryResponse
 import model.UserRole
-import domain.repository.AdminRepository
+import repository.AdminRepository
 
 fun Route.adminRoutes() {
 

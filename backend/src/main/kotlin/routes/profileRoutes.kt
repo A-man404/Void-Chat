@@ -1,6 +1,6 @@
 package routes
 
-import domain.repository.FriendRepository
+import repository.FriendRepository
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -8,8 +8,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import model.ChangePasswordRequest
-import domain.repository.ProfileRepository
-import domain.repository.UserRepository
+import repository.ProfileRepository
+import repository.UserRepository
 
 fun Route.profileRoutes() {
 

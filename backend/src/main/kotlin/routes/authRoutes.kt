@@ -7,7 +7,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import model.LoginRequest
 import model.RegisterRequest
-import domain.repository.UserRepository
+import repository.UserRepository
 
 fun Route.authRoutes(jwtConfig: JWTConfig) {
 
