@@ -16,17 +16,17 @@ data class ChatMessage(
 data class Group(
     val groupId: String,
     val adminEmail: String,
-    val members: List<GroupMember>,
+    val members: List<String>,
     val createdAt: Long = System.currentTimeMillis(),
     val profileImage: String,
-    val description: String
+    val description: String? = ""
 )
 
 @Serializable
 data class GroupMember(
-    val name:String,
-    val email:String,
-    val profileImage:String
+    val name: String,
+    val email: String,
+    val profileImage: String
 )
 
 @Serializable

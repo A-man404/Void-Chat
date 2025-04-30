@@ -17,7 +17,7 @@ data class User(
     val friends: List<String> = emptyList(),
     val friendRequests: List<String> = emptyList(),
     val blockedUser: List<String> = emptyList(),
-    val groups: List<Group> = emptyList(),
+    val groups: List<String> = emptyList(),
 )
 
 

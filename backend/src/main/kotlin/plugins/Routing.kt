@@ -13,6 +13,7 @@ fun Application.configureRouting(jwtConfig: JWTConfig) {
         profileRoutes()
         friendRoutes()
         friendRequestRoute()
+        groupRoutes()
 
     }
 }
