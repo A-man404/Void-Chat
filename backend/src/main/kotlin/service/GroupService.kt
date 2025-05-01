@@ -5,6 +5,7 @@ import com.mongodb.client.model.Updates
 import io.ktor.http.*
 import kotlinx.coroutines.flow.firstOrNull
 import model.Group
+import model.GroupMessage
 import model.RepositoryResponse
 import repository.GroupRepository
 
@@ -157,6 +158,15 @@ object GroupService {
         } catch (e: Exception) {
             RepositoryResponse(false, "Error occurred: ${e.localizedMessage}", HttpStatusCode.InternalServerError.value)
         }
+    }
+
+    suspend fun saveMessage(message: GroupMessage) {
+        GroupRepository.insertMessage(message)
+    }
+
+    suspend fun viewGroupMessages(roomId: String): RepositoryResponse<List<GroupMessage>> {
+        val res = GroupRepository.viewGroupMessages(roomId)
+        return RepositoryResponse(data = res, message = "list", HttpStatusCode.OK.value)
     }
 
 }
