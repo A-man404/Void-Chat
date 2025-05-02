@@ -8,8 +8,8 @@ fun Application.configureRouting(jwtConfig: JWTConfig) {
 
     routing {
         chatRoutes()
-        adminRoutes()
         authRoutes(jwtConfig)
+        adminRoutes()
         profileRoutes()
         friendRoutes()
         friendRequestRoute()
