@@ -3,12 +3,15 @@ package repository
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.toList
 import model.Group
+import model.GroupMessage
 import service.DatabaseService
 
 object GroupRepository {
 
     private val groupCollection = DatabaseService.getGroupCollection()
+    private val groupMessageCollection = DatabaseService.getGroupMessageCollection()
 
     suspend fun createGroup(group: Group) {
         groupCollection.insertOne(group).wasAcknowledged()
@@ -32,6 +35,14 @@ object GroupRepository {
             Filters.eq("groupId", groupId),
             Updates.pull("members", memberEmail)
         )
+    }
+
+    suspend fun insertMessage(groupMessage: GroupMessage) {
+        groupMessageCollection.insertOne(groupMessage)
+    }
+
+    suspend fun viewGroupMessages(roomId: String): List<GroupMessage> {
+        return groupMessageCollection.find(Filters.eq("groupId", roomId)).toList()
     }
 
 

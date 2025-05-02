@@ -4,6 +4,7 @@ import com.example.database.MongoDatabaseFactory
 import com.mongodb.kotlin.client.coroutine.MongoCollection
 import model.ChatMessage
 import model.Group
+import model.GroupMessage
 import model.User
 
 object DatabaseService {
@@ -14,12 +15,16 @@ object DatabaseService {
         return database.getCollection("users")
     }
 
-    fun getChatCollection(): MongoCollection<ChatMessage>{
+    fun getChatCollection(): MongoCollection<ChatMessage> {
         return database.getCollection("chats")
     }
 
-    fun getGroupCollection(): MongoCollection<Group>{
+    fun getGroupCollection(): MongoCollection<Group> {
         return database.getCollection("chat-groups")
+    }
+
+    fun getGroupMessageCollection(): MongoCollection<GroupMessage> {
+        return database.getCollection("group-messages")
     }
 
 
