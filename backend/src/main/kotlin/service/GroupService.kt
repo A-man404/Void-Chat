@@ -153,7 +153,6 @@ object GroupService {
                 return RepositoryResponse(true, "Member deleted successfully", HttpStatusCode.OK.value)
             } else {
                 return RepositoryResponse(true, "Member doesn't exist", HttpStatusCode.BadRequest.value)
-
             }
         } catch (e: Exception) {
             RepositoryResponse(false, "Error occurred: ${e.localizedMessage}", HttpStatusCode.InternalServerError.value)
